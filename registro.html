@@ -49,11 +49,11 @@
             <input type="password" id="contrasena" name="contrasena" required>
             <br>
 
-            <label for="fecha_embarazo">Fecha de Embarazo:</label>
-            <input type="date" id="fecha_embarazo" name="fecha_embarazo" required>
+            <label for="fecha_embarazo">Fecha de Parto:</label>
+            <input type="date" id="fecha_parto" name="fecha_parto" required>
             <br>
 
-            <label for="fecha_postparto">Fecha de Postparto:</label>
+            <label for="fecha_postparto">Fecha fin de Postparto:</label>
             <input type="date" id="fecha_postparto" name="fecha_postparto" required>
             <br>
             
@@ -63,6 +63,10 @@
         <!-- Mensaje de confirmación oculto por defecto -->
         <div id="confirmacion" style="display: none;">
             Usuario registrado correctamente.
+        </div>
+        <!-- Mensaje de error oculto por defecto -->
+        <div id="error" style="display: none; color: red;">
+            El tiempo máximo entre la fecha de parto y la fecha de postparto es de 1 año.
         </div>
     </main>
     <footer>
@@ -74,16 +78,26 @@
         document.addEventListener("DOMContentLoaded", function() {
             const formulario = document.querySelector("form");
             const confirmacion = document.getElementById("confirmacion");
+            const error = document.getElementById("error");
 
             formulario.addEventListener("submit", function(event) {
                 event.preventDefault(); // Evita el envío del formulario
 
-                // Simula el registro y muestra el mensaje de confirmación
-                // Aquí puedes agregar tu lógica de registro real si es necesario
-                confirmacion.style.display = "block";
+                const fechaParto = new Date(document.getElementById("fecha_parto").value);
+                const fechaPostparto = new Date(document.getElementById("fecha_postparto").value);
+                const unAnoDespues = new Date(fechaParto);
+                unAnoDespues.setFullYear(unAnoDespues.getFullYear() + 1);
+
+                if (fechaPostparto > unAnoDespues) {
+                    error.style.display = "block";
+                    confirmacion.style.display = "none";
+                } else {
+                    error.style.display = "none";
+                    confirmacion.style.display = "block";
+                    // Aquí puedes agregar la lógica de registro real si es necesario
+                }
             });
         });
     </script>
 </body>
 </html>
-
